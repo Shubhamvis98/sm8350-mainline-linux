@@ -22,6 +22,7 @@ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
 	struct edl_event_hdr *edl;
 	char cmd;
 	int err = 0;
+	u32 timeout;
 	u8 event_type = HCI_EV_VENDOR;
 	u8 rlen = sizeof(*edl) + sizeof(*ver);
 	u8 rtype = EDL_APP_VER_RES_EVT;
@@ -39,8 +40,10 @@ int qca_read_soc_version(struct hci_dev *hdev, struct qca_btsoc_version *ver,
 	}
 
 	cmd = EDL_PATCH_VER_REQ_CMD;
+	// XXX: Document this or *something* idk,, gross
+	timeout = (soc_type == QCA_QCA6490) ? HCI_INIT_TIMEOUT*10 : HCI_INIT_TIMEOUT;
 	skb = __hci_cmd_sync_ev(hdev, EDL_PATCH_CMD_OPCODE, EDL_PATCH_CMD_LEN,
-				&cmd, event_type, HCI_INIT_TIMEOUT);
+					&cmd, event_type, timeout);
 	if (IS_ERR(skb)) {
 		err = PTR_ERR(skb);
 		bt_dev_err(hdev, "Reading QCA version information failed (%d)",

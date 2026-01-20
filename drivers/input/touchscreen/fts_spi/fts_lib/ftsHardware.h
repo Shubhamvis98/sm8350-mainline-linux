@@ -23,7 +23,7 @@
 
 /*DIGITAL CHIP INFO*/
 #define DCHIP_ID_0								0x36				/*LSB chip ID for FTM5*/
-#define DCHIP_ID_1								0x39				/*MSB chip ID for FTM5*/
+#define DCHIP_ID_1								0x40				/*MSB chip ID for FTM5*/
 
 #define DCHIP_FW_VER_BYTE						2					/*number of bytes of the fw versions*/
 
